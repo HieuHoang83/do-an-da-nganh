@@ -40,6 +40,8 @@ export class DeviceController {
   findByUser(@User() user: IUser) {
     return this.deviceService.findByUser(user.id);
   }
+
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.deviceService.findOne(id);

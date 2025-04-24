@@ -46,6 +46,7 @@ export class DeviceService {
     return this.prisma.device.create({
       data: {
         name: createDeviceDto.name,
+        type: createDeviceDto.type,
         userId: user.id, // ✅ Lấy userId từ user đang đăng nhập (tránh truyền từ client)
       },
       include: { settings: true },
@@ -84,9 +85,17 @@ export class DeviceService {
       }
       if (action !== device.action) {
         // Tạo notify
+        device.action = action;
         await this.notifyService.create({
           message: `Thiết bị ${device.name} đã thay đổi trạng thái hoat động.`,
           userId: user.id,
+        });
+        await this.prisma.device.update({
+          where: { id: device.id }, // Tìm thiết bị theo id
+          data: {
+            action: device.action, // Cập nhật trường 'action' của thiết bị
+          },
+          include: { settings: true }, // Bao gồm các cài đặt nếu cần
         });
       }
       // Lưu vào deviceData

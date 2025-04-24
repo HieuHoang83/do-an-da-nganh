@@ -23,4 +23,8 @@ export class UpdateDeviceDto {
   @IsOptional()
   @IsBoolean()
   auto?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  action?: boolean;
 }

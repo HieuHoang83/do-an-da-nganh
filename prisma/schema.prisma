@@ -35,6 +35,7 @@ model Device {
   name     String
   userId   String
   user     User            @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type     String
   action   Boolean         @default(false)
   auto     Boolean         @default(true)
   data     DeviceData[]
