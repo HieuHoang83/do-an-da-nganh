@@ -1,5 +1,11 @@
 // update-device.dto.ts
-import { IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsDate,
+  IsBoolean,
+} from 'class-validator';
 
 export class UpdateDeviceDto {
   @IsOptional()
@@ -13,4 +19,8 @@ export class UpdateDeviceDto {
   @IsOptional()
   @IsDate()
   time?: Date;
+
+  @IsOptional()
+  @IsBoolean()
+  auto?: boolean;
 }

@@ -22,7 +22,7 @@ export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}
 
   @Public()
-  @Post('/data')
+  @Patch('/data')
   createDataDevice(@Body() createDataDeviceDto: CreateDataDeviceDto) {
     return this.deviceService.createDataDevice(createDataDeviceDto);
   }

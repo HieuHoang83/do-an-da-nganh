@@ -29,7 +29,6 @@ export class SettingService {
       deviceId: string;
       valueStart: number;
       valueEnd: number;
-      action: string;
     }[],
   ) {
     if (!devices || devices.length === 0) return;
@@ -40,7 +39,6 @@ export class SettingService {
         deviceId: device.deviceId,
         valueStart: device.valueStart,
         valueEnd: device.valueEnd,
-        action: device.action,
       })),
     });
   }
@@ -140,7 +138,6 @@ export class SettingService {
             data: {
               valueStart: device.valueStart,
               valueEnd: device.valueEnd,
-              action: device.action,
             },
           }),
         ),

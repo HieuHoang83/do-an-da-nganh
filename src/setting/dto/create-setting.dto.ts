@@ -23,10 +23,6 @@ class DeviceSettingDto {
   @IsNotEmpty({ message: 'valueEnd không được để trống' })
   @IsNumber({}, { message: 'valueEnd phải là số' })
   valueEnd: number;
-
-  @IsNotEmpty({ message: 'action không được để trống' })
-  @IsString({ message: 'action phải là chuỗi' })
-  action: string;
 }
 export class CreateSettingDto {
   @IsNotEmpty({ message: 'timeStart không được để trống' })

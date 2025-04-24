@@ -19,8 +19,4 @@ export class UpdateDeviceSettingDto {
   @IsOptional()
   @IsNumber({}, { message: 'valueEnd phải là số' })
   valueEnd?: number;
-
-  @IsOptional()
-  @IsString({ message: 'action phải là chuỗi' })
-  action?: string;
 }

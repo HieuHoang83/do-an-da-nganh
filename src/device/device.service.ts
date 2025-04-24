@@ -49,32 +49,51 @@ export class DeviceService {
   }
   async createDataDevice(createDataDeviceDto: CreateDataDeviceDto) {
     const { deviceId, value } = createDataDeviceDto;
+    const now = new Date();
 
-    // Tìm DeviceSetting phù hợp
+    // Tìm DeviceSetting có Setting còn hiệu lực và giá trị nằm trong khoảng
+
     const deviceSetting = await this.prisma.deviceSetting.findFirst({
       where: {
         deviceId,
-        valueStart: { lte: value }, // value >= valueStart
-        valueEnd: { gte: value }, // value <= valueEnd
+
+        setting: {
+          timeStart: { lte: now },
+          timeEnd: { gte: now },
+        },
+      },
+      include: {
+        setting: true, // nếu bạn muốn lấy thêm thông tin setting
       },
     });
+    console.log(deviceSetting);
 
-    if (!deviceSetting) {
+    let device = await this.findOne(createDataDeviceDto.deviceId);
+    if (device.auto && deviceSetting) {
+      let action = device.action;
+      if (value < deviceSetting.valueStart) {
+        action = true;
+      } else if (action && value > deviceSetting.valueEnd) {
+        action = false;
+      }
+      // Lưu vào deviceData
       return this.prisma.deviceData.create({
         data: {
-          ...createDataDeviceDto,
-          action: 'none', // Gán action
+          deviceId,
+          value,
+          action,
+        },
+      });
+    } else {
+      return this.prisma.deviceData.create({
+        data: {
+          deviceId,
+          value,
+          action: device.action,
         },
       });
     }
-
-    // Gán action từ DeviceSetting
-    return this.prisma.deviceData.create({
-      data: {
-        ...createDataDeviceDto,
-        action: deviceSetting.action, // Gán action
-      },
-    });
+    // Nếu không tìm được -> action = "none"
   }
   async updateDevice(id: string, updateDeviceDto: UpdateDeviceDto) {
     const device = await this.prisma.device.findUnique({

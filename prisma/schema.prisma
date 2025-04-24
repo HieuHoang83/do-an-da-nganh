@@ -35,6 +35,8 @@ model Device {
   name     String
   userId   String
   user     User            @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  action   Boolean         @default(false)
+  auto     Boolean         @default(true)
   data     DeviceData[]
   settings DeviceSetting[]
 }
@@ -45,7 +47,7 @@ model DeviceData {
   device   Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
   value    Float
   time     DateTime @default(now())
-  action   String   @default("none")
+  action   Boolean  @default(false)
 }
 
 model Setting {
@@ -64,7 +66,6 @@ model DeviceSetting {
   settingId       String
   valueStart      Float
   valueEnd        Float
-  action          String
 
   device  Device  @relation(fields: [deviceId], references: [id], onDelete: Cascade)
   setting Setting @relation(fields: [settingId], references: [id], onDelete: Cascade)
