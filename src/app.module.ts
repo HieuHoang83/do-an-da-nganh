@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './user/user.module';
 import { SettingModule } from './setting/setting.module';
 import { DeviceModule } from './device/device.module';
+import { NotifyModule } from './notify/notify.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DeviceModule } from './device/device.module';
     AuthModule,
     SettingModule,
     DeviceModule,
+    NotifyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

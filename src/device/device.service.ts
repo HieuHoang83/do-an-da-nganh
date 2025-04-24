@@ -5,10 +5,14 @@ import { CreateDataDeviceDto } from './dto/create-Datadevice.dto';
 
 import { UpdateDeviceDto } from './dto/update-Datadevice.dto';
 import { IUser } from 'src/interface/users.interface';
+import { NotifyService } from 'src/notify/notify.service';
 
 @Injectable()
 export class DeviceService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notifyService: NotifyService,
+  ) {}
 
   async findAll() {
     return this.prisma.device.findMany({
@@ -47,7 +51,10 @@ export class DeviceService {
       include: { settings: true },
     });
   }
-  async createDataDevice(createDataDeviceDto: CreateDataDeviceDto) {
+  async createDataDevice(
+    user: IUser,
+    createDataDeviceDto: CreateDataDeviceDto,
+  ) {
     const { deviceId, value } = createDataDeviceDto;
     const now = new Date();
 
@@ -66,7 +73,6 @@ export class DeviceService {
         setting: true, // nếu bạn muốn lấy thêm thông tin setting
       },
     });
-    console.log(deviceSetting);
 
     let device = await this.findOne(createDataDeviceDto.deviceId);
     if (device.auto && deviceSetting) {
@@ -75,6 +81,13 @@ export class DeviceService {
         action = true;
       } else if (action && value > deviceSetting.valueEnd) {
         action = false;
+      }
+      if (action !== device.action) {
+        // Tạo notify
+        await this.notifyService.create({
+          message: `Thiết bị ${device.name} đã thay đổi trạng thái hoat động.`,
+          userId: user.id,
+        });
       }
       // Lưu vào deviceData
       return this.prisma.deviceData.create({
