@@ -15,9 +15,4 @@ export class CreateDataDeviceDto {
 
   @IsNumber()
   value: number;
-
-  @IsNotEmpty()
-  @Type(() => Date) // ✅ Chuyển đổi từ chuỗi ISO thành Date
-  @IsDate()
-  time: Date;
 }

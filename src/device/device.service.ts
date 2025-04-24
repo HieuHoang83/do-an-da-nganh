@@ -60,7 +60,12 @@ export class DeviceService {
     });
 
     if (!deviceSetting) {
-      throw new NotFoundException('Không tìm thấy DeviceSetting phù hợp');
+      return this.prisma.deviceData.create({
+        data: {
+          ...createDataDeviceDto,
+          action: 'none', // Gán action
+        },
+      });
     }
 
     // Gán action từ DeviceSetting
