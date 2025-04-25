@@ -28,6 +28,7 @@ export class UpdateSettingWithDevicesDto {
   @IsString({ message: 'Trạng thái phải là chuỗi' })
   status?: string;
 
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => UpdateDeviceSettingDto)

@@ -71,7 +71,7 @@ export class SettingService {
           some: { deviceId: deviceId },
         },
       },
-      include: { devices: false }, // Nếu muốn lấy luôn thông tin thiết bị trong kết quả
+      include: { devices: true }, // Nếu muốn lấy luôn thông tin thiết bị trong kết quả
     });
   }
   async findBySetting(settingId: string) {
