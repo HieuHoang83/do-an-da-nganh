@@ -10,6 +10,8 @@ import {
 import { NotifyService } from './notify.service';
 import { CreateNotifyDto } from './dto/create-notify.dto';
 import { UpdateNotifyDto } from './dto/update-notify.dto';
+import { User } from 'src/decorators/customize';
+import { IUser } from 'src/interface/users.interface';
 
 @Controller('notify')
 export class NotifyController {
@@ -21,13 +23,8 @@ export class NotifyController {
   }
 
   @Get()
-  findAll() {
-    return this.notifyService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.notifyService.findOne(+id);
+  findOne(@User() user: IUser) {
+    return this.notifyService.findOne(user.id);
   }
 
   @Patch(':id')

@@ -19,8 +19,11 @@ export class NotifyService {
     return `This action returns all notify`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notify`;
+  async findOne(userId: string) {
+    return this.prisma.notify.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' }, // Lấy thông báo mới nhất nếu cần
+    });
   }
 
   async update(id: string, dto: UpdateNotifyDto) {

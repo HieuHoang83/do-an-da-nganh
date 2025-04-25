@@ -37,7 +37,11 @@ export class DeviceService {
     return this.prisma.device.findMany({
       where: { userId },
       include: {
-        data: true, // Join bảng DeviceData
+        data: {
+          orderBy: {
+            time: 'desc', // Sắp xếp giảm dần theo thời gian
+          },
+        }, // Join bảng DeviceData
       },
     });
   }
@@ -86,8 +90,14 @@ export class DeviceService {
       if (action !== device.action) {
         // Tạo notify
         device.action = action;
+        let nameAction = '';
+        if (action) {
+          nameAction = 'đã bật';
+        } else {
+          nameAction = 'đã tắt';
+        }
         await this.notifyService.create({
-          message: `Thiết bị ${device.name} đã thay đổi trạng thái hoat động.`,
+          message: `Thiết bị  ${device.name} <strong> ${nameAction} </strong> trạng thái hoat động.`,
           userId: user.id,
         });
         await this.prisma.device.update({
