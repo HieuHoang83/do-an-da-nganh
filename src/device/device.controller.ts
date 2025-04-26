@@ -21,12 +21,19 @@ import { IUser } from 'src/interface/users.interface';
 export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}
 
-  @Patch('/data')
+  @Post('/data')
   createDataDevice(
     @User() user: IUser,
     @Body() createDataDeviceDto: CreateDataDeviceDto,
   ) {
     return this.deviceService.createDataDevice(user, createDataDeviceDto);
+  }
+  @Patch('/:id')
+  updateDevice(
+    @Param('id') id: string,
+    @Body() updateDeviceDto: UpdateDeviceDto,
+  ) {
+    return this.deviceService.updateDevice(id, updateDeviceDto);
   }
   @Post()
   createDevice(@Body() createDeviceDto: CreateDeviceDto, @User() user: IUser) {
